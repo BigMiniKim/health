@@ -6,8 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import com.health.domain.HealthUseVO;
 
+import lombok.extern.log4j.Log4j;
+
 
 @Repository("healthUseDAO")
+@Log4j
 public class HealthUseDAOImpl implements HealthUseDAO {
 
 	ArrayList<HealthUseVO> hDB = new ArrayList<>();
@@ -17,7 +20,7 @@ public class HealthUseDAOImpl implements HealthUseDAO {
 		boolean result = false;
 
 		result = hDB.add(hvo);
-
+		log.info(hDB);
 		return result;
 	}
 

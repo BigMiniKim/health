@@ -11,7 +11,7 @@ import lombok.extern.log4j.Log4j;
 
 @Service("healthUseService")
 @Log4j
-public class healthUseServiceImpl implements HealthUseService {
+public class HealthUseServiceImpl implements HealthUseService {
 
 	@Autowired
 	private HealthUseDAO hdao;
