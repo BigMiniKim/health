@@ -37,8 +37,16 @@ public class HealthUseServiceImpl implements HealthUseService {
 
 	@Override
 	public boolean deprecated(int healthUseNo) {
-		boolean result = hdao.delete(healthUseNo);
+		
+		boolean result = false;
+		result = hdao.delete(healthUseNo);
 		return result;
+	}
+
+	@Override
+	public HealthUseVO userInfo(String userId) {
+		
+		return hdao.selectUser(userId);
 	}
 
 }

@@ -30,9 +30,11 @@ body {font-size:16px;}
 	  <div class="w3-bar-block">
 	    <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
 	    <a href="/member/mypage" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">마이페이지</a> 
-	    <a href="/member/logout" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">로그아웃</a> 
-	    <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">수업 신청</a> 
-	    <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">수업 신청 확인</a> 
+	    <a href="/member/logout" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">로그아웃</a>
+	    <a href="/program/create" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">프로그램 생성</a> 
+	    <a href="/program/pList" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">프로그램 확인</a>  	     
+	    <a href="/register/register" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">수업 신청</a> 
+	    <a href="/register/rlist" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">수업 신청 확인</a>  
 	    <a href="/health/healthusebuy" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">이용권 구매</a>
 	  </div>
 	</c:when>
@@ -41,6 +43,7 @@ body {font-size:16px;}
 	    <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
 	    <a href="/member/join" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">회원가입</a> 
 	    <a href="/member/login" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">로그인</a> 
+	    
 	  </div>
 	</c:otherwise>
   </c:choose> 

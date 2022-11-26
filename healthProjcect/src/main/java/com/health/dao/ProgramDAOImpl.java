@@ -1,75 +1,123 @@
 package com.health.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.health.domain.HealthProVO;
 
+import lombok.extern.log4j.Log4j;
 
 @Repository("programDAO")
+@Log4j
 public class ProgramDAOImpl implements ProgramDAO {
 
-	//DB
-	ArrayList<HealthProVO> pDB = new ArrayList<>();
-	
-	private int id = 1;		//프로그램에 기본키 값 pid 값
-	
-	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+
 	@Override
 	public boolean insert(HealthProVO pvo) {
+
 		boolean result = false;
-		
-		pvo.setPid(id); 	//기본키값 추가....
-		result = pDB.add(pvo);
-		id += 1;
-		
+
+		log.info("프로그램에서의 pvo값 확인" + pvo);
+
+		String sql = "insert into program(name,date,times,totalPerson) values (?,?,?,?)";
+
+		// DB작업
+		/*
+		 * if(DB.add(vo)) { result = 1; };
+		 */
+
+		int re = jdbcTemplate.update(sql,
+				new Object[] { pvo.getName(), pvo.getDate(), pvo.getTimes(), pvo.getTotalPerson() });
+		log.info("프로그램 insert 결과 : " + result);
+
+		if (re == 1) {
+
+			result = true;
+
+		}
+
 		return result;
 	}
 
 	@Override
 	public HealthProVO selectOne(int pid) {
-		for (HealthProVO pvo : pDB) {
-			if(pvo.getPid()== pid) {
-				return pvo;
-				
-			}
-		}
-		return null;
-	}
+		
+		String sql = "select * from program where id = ?";
 
+		/* list<HelathPvoVO> result = null; */
+
+		List<HealthProVO> result1 = jdbcTemplate.query(sql, new Object[] {pid}, new RowMapper<HealthProVO>() {
+			@Override
+			public HealthProVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				HealthProVO pvo = new HealthProVO();
+				pvo.setName(rs.getString("name"));
+				pvo.setDate(rs.getString("date"));
+				pvo.setTimes(rs.getInt("times"));
+				pvo.setTotalPerson(rs.getInt("totalPerson"));
+
+				return pvo;
+			}
+		});
+		
+
+		return result1.get(0); 	
+	}
+	
 	@Override
 	public ArrayList<HealthProVO> selectAll() {
-		return pDB;
+		
+		String sql = "select * from program";
+		
+			List<HealthProVO> result = jdbcTemplate.query(sql, new RowMapper<HealthProVO>(){
+				
+			public HealthProVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				HealthProVO pvo = new HealthProVO();
+				pvo.setPid(rs.getInt("id"));
+				pvo.setName(rs.getString("name"));
+				pvo.setDate(rs.getString("date"));
+				pvo.setTimes(rs.getInt("times"));
+				pvo.setTotalPerson(rs.getInt("totalPerson"));
+
+				return pvo;				
+			}
+				});
+		
+		return (ArrayList<HealthProVO>)result;
 	}
 
 	@Override
 	public boolean update(HealthProVO pvo) {
 		boolean result = false;
-		for(HealthProVO vo:pDB) {
-			if (vo.getPid() == pvo.getPid()) {
-				vo.setDate(pvo.getDate());
-				vo.setTimes(pvo.getTimes());
-				vo.setTotalPerson(pvo.getTotalPerson());
+		
+		String sql = "update program set name = ?, date = ?, times = ?, totalPerson = ? where id = ?";
+		
+			int re = jdbcTemplate.update(sql,
+					new Object[] { pvo.getName(), pvo.getDate(), pvo.getTimes(), pvo.getTotalPerson() });
+			log.info("프로그램 insert 결과 : " + result);
+
+			if (re == 1) {
+
 				result = true;
-				
+
 			}
+
+			return result;
 		}
-		return result;
-	}
+	
 
 	@Override
 	public void delete(int pid) {
-		int num = 0; //인덱스 값...
-		for(HealthProVO pvo:pDB) {
-			if ( pvo.getPid() == pid) {
-				pDB.remove(num);
-				break;
-			}
-			num +=1;
-		}
-		pDB.remove(num);
-
+		
+		String sql = "delete from program where id = ?";
+		jdbcTemplate.update(sql,new Object[] {pid});
 	}
-
 }
